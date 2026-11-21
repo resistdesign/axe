@@ -1,0 +1,48 @@
+# Proposed repository-wide indexes (illustration only).
+# Syntax is not accepted by existing TSX/GGX compilers without an Axe transform.
+# Use stable, recognizable tokens. Full names remain allowed.
+
+<ComponentIndex>
+  B: Box
+  V: VBox
+  T: Text
+  Sc: Screen
+  Pn: Panel
+  Col: Column
+  Tx: Text
+  Tf: TextField
+  Sel: Select
+  Sw: Switch
+  Ft: Footer
+  Rw: Row
+  Btn: Button
+</ComponentIndex>
+
+<PropIndex>
+  w: width
+  h: height
+  c: color
+  g: gap
+  p: padding
+  bg: backgroundColor
+  t: title
+  v: value
+  onC: onChange
+  onP: onPress
+  d: direction
+  ai: alignItems
+  jc: justifyContent
+</PropIndex>
+
+<ValueIndex>
+  +: "100%"
+  $: "start"
+  .: "end"
+  md: "medium"
+  lg: "large"
+  row: "row"
+  center: "center"
+  end: "end"
+  muted: "muted"
+  surface: "surface"
+</ValueIndex>

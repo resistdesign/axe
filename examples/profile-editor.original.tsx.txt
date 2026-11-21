@@ -1,0 +1,70 @@
+// Original invented example — standard JSX-style TSX.
+// View-only snippet: named components, data and handlers are assumed in scope.
+return (
+  <Screen
+    width="100%"
+    height="100%"
+    padding="large"
+  >
+    <Panel title="Account">
+      <Column gap="medium">
+        <Text color="muted">
+          Update your public profile.
+        </Text>
+        <TextField
+          label="Display name"
+          value={name}
+          onChange={setName}
+        />
+        <TextField
+          label="Handle"
+          value={handle}
+          onChange={setHandle}
+        />
+        <Select
+          label="Visibility"
+          value={visibility}
+          options={visibilityOptions}
+          onChange={setVisibility}
+        />
+      </Column>
+    </Panel>
+    <Panel title="Notifications">
+      <Column gap="medium">
+        <Switch
+          label="Mentions"
+          checked={mentions}
+          onChange={setMentions}
+        />
+        <Switch
+          label="Messages"
+          checked={messages}
+          onChange={setMessages}
+        />
+      </Column>
+    </Panel>
+    <Footer backgroundColor="surface">
+      <Row
+        direction="row"
+        alignItems="center"
+        justifyContent="end"
+        gap="medium"
+      >
+        <Button
+          variant="quiet"
+          disabled={!dirty}
+          onPress={reset}
+        >
+          Reset
+        </Button>
+        <Button
+          variant="primary"
+          disabled={!dirty}
+          onPress={save}
+        >
+          Save
+        </Button>
+      </Row>
+    </Footer>
+  </Screen>
+);

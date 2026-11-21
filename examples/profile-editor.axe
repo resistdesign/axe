@@ -1,0 +1,28 @@
+// Proposed Axe rendition of profile-editor.original.tsx.txt.
+// The ^ scope examples describe intended reuse; grammar is still being designed.
+// Component, prop and value aliases live in shared-indexes.axe.
+return (
+  <Sc w=+ h=+ p=lg>
+    <Pn(t="Account")/Col(g=md)/Tx(c=muted)>
+      Update your public profile.
+    </Pn/Col/Tx>
+    <^Pn/^Col/Tf(label="Display name" v={name} onC={setName}) />
+    <^Pn/^Col/Tf(label="Handle" v={handle} onC={setHandle}) />
+    <^Pn/^Col/Sel(
+      label="Visibility" v={visibility}
+      options={visibilityOptions} onC={setVisibility}
+    ) />
+    <Pn(t="Notifications")/Col(g=md)/Sw(
+      label="Mentions" checked={mentions} onC={setMentions}
+    ) />
+    <^Pn/^Col/Sw(
+      label="Messages" checked={messages} onC={setMessages}
+    ) />
+    <Ft(bg=surface)/Rw(d=row ai=center jc=end g=md)/Btn(
+      variant="quiet" disabled={!dirty} onP={reset}
+    )>Reset</Ft/Rw/Btn>
+    <^Ft/^Rw/Btn(
+      variant="primary" disabled={!dirty} onP={save}
+    )>Save</Ft/Rw/Btn>
+  </Sc>
+);
