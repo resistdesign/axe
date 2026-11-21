@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/axe-hero.webp" alt="Axe: compact, readable XML-like UI declarations" width="100%" />
+  <img src="assets/axe-hero-square.webp" alt="Axe: compact, readable XML-like UI declarations" width="100%" />
 </div>
 
 # Axe
