@@ -6,6 +6,10 @@
 
 **More intent on screen. Less markup ceremony.**
 
+> **The code becomes less like reading instructions and more like recognizing shapes.**
+
+**AXE is designed for fluency, not just brevity.** As familiar component and property aliases become recognizable patterns, attention can shift from decoding repetitive framework syntax to reading the application's actual meaning.
+
 Axe is an experimental, compile-time syntax for XML-like view declarations. It keeps familiar tags, nesting, text, expressions, and named properties, but removes recurring *spelling* and *single-child nesting* overhead. Its goal is **readable density**, not maximum compression.
 
 > **Status: design reference, not an implemented compiler.** The examples document syntax we explored; the exact grammar, especially `^` reuse across scopes, still needs implementation and verification. Ordinary JSX/TSX parsers do not accept Axe's chain and implicit indexed-value syntax unchanged.
@@ -27,6 +31,14 @@ With `Bt: Button` in **ComponentIndex** and `oC: onClick` in **PropIndex**, the 
 AXE is **not** trying to compress your application's meaning. It increases the proportion of meaningful information on screen by removing repetitive syntax around it. The full `Button` and `onClick` spellings remain available whenever they read better.
 
 > **Shorten the predictable. Preserve the particular.**
+
+### From decoding syntax to recognizing shapes
+
+At first, a reader may mentally translate `Bt` into `Button` and `oC` into `onClick`. With a consistent, learned index vocabulary, these can become recognizable visual patterns rather than phrases to expand consciously. Then the eyes can land on what is specific to this view: `onSaveForm` and `Save`.
+
+This is AXE's **design hypothesis**, not a measured speed or comprehension claim. Familiar aliases, predictable structure, optional full names, and editor expansion should help people build fluency without hiding meaning. The aim is **faster recognition of intent**, not maximum abbreviation.
+
+See [the fluency rationale and related work](docs/DESIGN.md#fluency-from-decoding-syntax-to-recognizing-shapes).
 
 ## The idea in one glance
 

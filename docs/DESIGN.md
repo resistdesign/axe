@@ -26,6 +26,26 @@ This is not indiscriminate minification, automatic renaming, or an invitation to
 
 **Evaluate AXE by how clearly a reader can find the UI's purpose, behavior, and data, not by how few characters it contains.**
 
+## Fluency: from decoding syntax to recognizing shapes
+
+> **The code becomes less like reading instructions and more like recognizing shapes.**
+
+AXE aims for a learned visual vocabulary. A newcomer may consciously decode `Bt` as `Button` and `oC` as `onClick`; with repeated exposure to stable indexes, those tokens may become familiar units of recognition. The developer's attention can move toward **`onSaveForm`** and **`Save`**, which are the unique, meaningful parts of the view.
+
+**This is a hypothesis about fluency, not a proven performance result.** Readable density and learning cost should ultimately be tested with actual developers: compare reading/comprehension, time-to-locate-behavior, editing mistakes, and use of full-name escape hatches before and after practice. It is possible to abbreviate too aggressively, so stable, understandable aliases and conventional markup remain important.
+
+AXE should support both phases: easy discovery for newcomers (hover-to-expand, full names, static diagnostics) and rapid pattern recognition for practiced authors. **The goal is not to make unfamiliar code cryptic; it is to make familiar code instantly legible.**
+
+## Related work: what AXE borrows and what it proposes
+
+AXE is **not** the first attempt to shorten markup or build muscle memory around shorthand. Its distinction is the *combination* and authoring philosophy, rather than inventing abbreviation itself:
+
+- [Emmet](https://docs.emmet.io/abbreviations/syntax/) has shorthand for nested HTML/XML trees and tag aliases; [Emmet's CSS abbreviations](https://docs.emmet.io/css-abbreviations/) even support delimiter-free property/value combinations such as `m10`. These are primarily **editor/input abbreviations expanded into ordinary source**, rather than a compact XML-like language deliberately retained as the authored source.
+- [Haml](https://github.com/haml/haml) and [Slim](https://github.com/slim-template/slim) remove markup ceremony using alternate template syntax, often relying on indentation for nesting. AXE intentionally **retains recognizable XML-like tags and familiar expressions**, with full-length spelling always available.
+- [Hiccup](https://cljdoc.org/d/hiccup/hiccup/2.0.0/doc/syntax) represents HTML compactly using Clojure vectors. It is another demonstration that markup need not use verbose XML, but a different authoring model.
+
+AXE proposes **independent, scoped ComponentIndex/PropIndex/ValueIndex vocabularies; optional concatenated value aliases with `=` only for disambiguation; element paths; experimental ancestor reuse; compile-time usage-site ambiguity checks; and intentional preservation of app-specific identifiers and UI content**. These are design proposals, not yet a shipped language or validated comparative advantage.
+
 ## Things we learned, in order
 
 | Experiment | Outcome |

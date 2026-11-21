@@ -16,6 +16,10 @@ For this illustration, **ComponentIndex** contains `Bt: Button` and **PropIndex*
 
 This is the design goal behind *readable density*: **less redundant markup, more visible intent**.
 
+> **The code becomes less like reading instructions and more like recognizing shapes.**
+
+The shorthand is meant to become a familiar visual pattern with practice. That fluency is a [design hypothesis](DESIGN.md#fluency-from-decoding-syntax-to-recognizing-shapes), not a guarantee that every short alias is easier to read. The important identifiers `onSaveForm` and `Save` remain visible throughout.
+
 ## 1. Tiny: three indexes together
 
 ~~~jsx
