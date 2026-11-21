@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="740" viewBox="0 0 1440 740" role="img" aria-labelledby="title desc">
+<title id="title">Vertical JSX nesting becomes an Axe path</title>
+<desc id="desc">A conventional three-level Box, VBox and Text nested block on the left becomes one Axe chain on the right; a tree illustrates caret reuse.</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0D1B28"/><stop offset="1" stop-color="#0E3336"/></linearGradient></defs>
+<rect width="1440" height="740" rx="23" fill="url(#bg)"/>
+<text x="66" y="80" fill="#E7F8EE" font-family="Inter,Arial,sans-serif" font-size="40" font-weight="780">Less depth on screen. Same tree underneath.</text>
+<text x="66" y="121" fill="#96B7BA" font-family="Inter,Arial,sans-serif" font-size="22">Axe doesn't flatten your UI—it flattens unnecessary source ceremony.</text>
+<rect x="60" y="163" width="604" height="305" rx="20" fill="#142834" stroke="#45656B" stroke-width="2"/>
+<rect x="776" y="163" width="604" height="305" rx="20" fill="#142834" stroke="#45656B" stroke-width="2"/>
+<text x="95" y="213" fill="#88B8C1" font-family="Inter,Arial,sans-serif" font-size="23" font-weight="700">CONVENTIONAL JSX</text>
+<text x="811" y="213" fill="#A6E7BC" font-family="Inter,Arial,sans-serif" font-size="23" font-weight="700">AXE CHAIN</text>
+<g font-family="ui-monospace,Consolas,monospace" font-size="26" fill="#E7F1EE">
+  <text x="95" y="271">&lt;B&gt;</text>
+  <text x="130" y="307">&lt;V&gt;</text>
+  <text x="165" y="343">&lt;T&gt;Hello!&lt;/T&gt;</text>
+  <text x="130" y="379">&lt;/V&gt;</text>
+  <text x="95" y="415">&lt;/B&gt;</text>
+  <text x="811" y="291" fill="#E8FF9E">&lt;B/V/T&gt;Hello!&lt;/B/V/T&gt;</text>
+  <text x="811" y="350" fill="#B8D3D1">&lt;^B/^V/T&gt;Hola!&lt;/B/V/T&gt;</text>
+</g>
+<text x="813" y="412" fill="#9EB9B6" font-family="Inter,Arial,sans-serif" font-size="20">Keep the Box and VBox; add another Text.</text>
+<path d="M682 318H754" stroke="#9FE5B8" stroke-width="5" stroke-linecap="round"/>
+<path d="m742 305 14 13-14 13" fill="none" stroke="#9FE5B8" stroke-width="5" stroke-linecap="round"/>
+<rect x="60" y="505" width="1320" height="173" rx="20" fill="#142E35" stroke="#496D6A" stroke-width="2"/>
+<text x="95" y="556" fill="#D7F4DC" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="700">Compiled tree</text>
+<rect x="360" y="534" width="180" height="56" rx="14" fill="#24574D" stroke="#7EDCB0"/>
+<rect x="680" y="534" width="180" height="56" rx="14" fill="#24574D" stroke="#7EDCB0"/>
+<rect x="1015" y="510" width="260" height="48" rx="12" fill="#34546C" stroke="#8CAFC5"/>
+<rect x="1015" y="584" width="260" height="48" rx="12" fill="#34546C" stroke="#8CAFC5"/>
+<path d="M540 562H680M860 562H948V534H1015M948 562V608H1015" fill="none" stroke="#8CD8B4" stroke-width="4" stroke-linejoin="round"/>
+<text x="419" y="571" fill="#E8FFC8" font-size="27" font-weight="700" font-family="ui-monospace,Consolas,monospace">B</text>
+<text x="739" y="571" fill="#E8FFC8" font-size="27" font-weight="700" font-family="ui-monospace,Consolas,monospace">V</text>
+<text x="1043" y="542" fill="#E9F3FF" font-size="23" font-weight="700" font-family="ui-monospace,Consolas,monospace">T: Hello!</text>
+<text x="1043" y="615" fill="#E9F3FF" font-size="23" font-weight="700" font-family="ui-monospace,Consolas,monospace">T: Hola!</text>
+</svg>
