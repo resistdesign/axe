@@ -85,7 +85,7 @@ In our original development discussion, a real mobile-app profile editor render 
 
 That is **99 fewer lines** (~59.6% less vertical length at a fixed line height), so approximately **2.48× as much source can fit in a viewport**. Character reduction is ~50.2%. Layout, font, wrap-width and formatting conventions affect these results; this is an exploratory example, not a performance study.
 
-The rewrites also move some recurring defaults into existing Estragon layouts when appropriate and rely on shared indexes whose declarations aren't counted in the local render block.
+Axe's indexed and chained comparison assumes shared indexes whose declarations are not counted in the local render block. Estragon layout declarations are a separate integration opportunity, not part of this specific TSX measurement.
 
 ## Open decisions before a parser
 

@@ -123,6 +123,7 @@ This is a **proposed integration**, not something currently accepted by Estragon
 - **[Annotated examples](docs/EXAMPLES.md)** — simple branches, shared parents, independent layouts, a form, and Estragon integration.
 - **[Design decisions and open questions](docs/DESIGN.md)** — what we tried, rejected, and still need to decide.
 - **[Example index file](examples/shared-indexes.axe)** — proposed repo-wide authoring vocabulary.
+- **[Measurements](docs/MEASUREMENTS.md)** — transparent, reproducible before/after counts (plus the exploratory complex-screen benchmark).
 - **[Profile editor before](examples/profile-editor.original.tsx.txt) / [after](examples/profile-editor.axe)** — self-contained illustrative view snippets.
 
 ### Editor possibilities
