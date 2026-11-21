@@ -46,7 +46,7 @@ This is not indiscriminate minification, automatic renaming, or an invitation to
 ## Principles
 
 1. **Opt-in at each occurrence.** Long names remain valid; never force shorthand everywhere.
-3. **Compress repeated framework vocabulary, never app-specific intent.** Preserve expressive handler names, domain variables, labels, user-visible text, and logic.
+2. **Compress repeated framework vocabulary, never app-specific intent.** Preserve expressive handler names, domain variables, labels, user-visible text, and logic.
 3. **No silent interpretation.** Names are flexible across independent indexes and scopes; ambiguous readings fail exactly where authored instead of receiving arbitrary precedence.
 4. **Preserve the view tree.** An optimized declaration should result in the same nodes, props, children, handlers, and order.
 5. **Keep real complexity visible.** Variables, callbacks, conditionals, and meaningful differences remain in the view.
