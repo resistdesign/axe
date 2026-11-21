@@ -12,8 +12,11 @@
 <rect width="1440" height="590" rx="28" fill="url(#grid)"/>
 <ellipse cx="1180" cy="100" rx="540" ry="350" fill="url(#halo)"/>
 <g transform="translate(74 77)">
-  <path d="M0 24H16V-5H37V24H59V45H37V87H16V45H0Z" fill="#C7F27F" opacity=".9"/>
-  <path d="M13 27 47 61" stroke="#10242B" stroke-width="8" stroke-linecap="round"/>
+  <!-- Clean axe-head emblem, replacing the original cross-like shape. -->
+  <path d="M13 38H32L22 101H4Z" fill="#C5F58A"/>
+  <path d="M8 29 74 7C85 27 85 54 75 75L33 42H7Z" fill="#7BE4B9"/>
+  <path d="M7 29 33 42H7Z" fill="#D7FF9A"/>
+  <path d="M13 44H31L28 54H11Z" fill="#16342F" opacity=".85"/>
   <text x="4" y="207" fill="url(#lime)" font-family="Inter,Arial,sans-serif" font-size="132" font-weight="900" letter-spacing="-9">AXE</text>
   <text x="9" y="260" fill="#E9F5EF" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="700">More intent.</text>
   <text x="9" y="303" fill="#E9F5EF" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="700">Less ceremony.</text>
