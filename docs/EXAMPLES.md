@@ -5,7 +5,7 @@ These are original, self-contained illustrative examples of **proposed syntax**.
 ## 1. Tiny: three indexes together
 
 ~~~jsx
-<B w=+ h=+>
+<B w+ h+>
   <T c="blue">Hello!</T>
 </B>
 ~~~
@@ -18,12 +18,12 @@ Expands into ordinary component and property names:
 </Box>
 ~~~
 
-Try writing `<B width="100%" h=+>` instead—mixing shorthand and full names is intentional.
+Try writing `<B width="100%" h+>` instead—mixing shorthand and full names is intentional. Here, `w+` is the **preferred** compact spelling; `w=+` remains an optional explicit spelling.
 
 ## 2. A path is still a tree
 
 ~~~jsx
-<B(w=+ h=+)/V(g=md)/T(c="blue")>Hello!</B/V/T>
+<B(w+ h+)/V(gmd)/T(c="blue")>Hello!</B/V/T>
 ~~~
 
 means:
@@ -38,10 +38,36 @@ means:
 
 No indentation is required for *the parser* to understand the chain, but indentation in conventional nested markup is still useful for human eyes.
 
+## 2a. Delimiters and local ambiguity
+
+`=` is available when two independent indexes create multiple ways to split an attribute. It is **not required** for the typical case, and `=` itself is never legal inside an alias name.
+
+~~~xml
+<PropIndex>
+  w: width
+  w+: max_width
+  x: extend
+</PropIndex>
+<ValueIndex>
+  +: "100%"
+</ValueIndex>
+~~~
+
+~~~jsx
+<B w+ />                     // Compact: permitted if only one reading is valid here
+<B w=+ />                    // Explicit: width="100%"
+<B w+=+ />                   // Explicit: max_width="100%"
+<Positioned extend={true} /> // Full name when 'x' collides with native x
+~~~
+
+If both the bare `w+` property and the split `w` + `+` are legal for a particular element, `<B w+ />` must fail **on that attribute**, suggesting the explicit boundary. Likewise, if a `Positioned` node has native `x`, the `x: extend` alias conflicts **there**: `<Positioned x={10} />` is ambiguous, not silently treated as native `x`. Other element types can still use `x` normally if they have no colliding native property. Defining the aliases in a shared file is not itself an error.
+
+This is a design contract; exact host-specific candidate/type rules remain to be implemented.
+
 ## 3. Declare once; add children later
 
 ~~~jsx
-<B(w=+ h=+)/V/T>Hello!</B/V/T>
+<B(w+ h+)/V/T>Hello!</B/V/T>
 <^B/V/T>Hola!</B/V/T>
 ~~~
 
@@ -105,7 +131,7 @@ layout const <Side gap="8px">
   <BottomLeft /> <BottomMiddle /> <BottomRight />
 </Side>
 
-layout const <App w=+ h=+ columns={["160px", "1fr"]}>
+layout const <App w+ h+ columns={["160px", "1fr"]}>
   <Header /> <Header />
   <Side /> <Body />
   <Side /> <Footer />

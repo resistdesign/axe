@@ -2,7 +2,7 @@
 // The ^ scope examples describe intended reuse; grammar is still being designed.
 // Component, prop and value aliases live in shared-indexes.axe.
 return (
-  <Sc w=+ h=+ p=lg>
+  <Sc w+ h+ p=lg>
     <Pn(t="Account")/Col(g=md)/Tx(c=muted)>
       Update your public profile.
     </Pn/Col/Tx>

@@ -18,21 +18,22 @@ Our north star: **more intent per screen, fewer meaningless keystrokes, and no m
 | Flat declarations with parent references | Potentially useful but introduced lots of reference ceremony |
 | ComponentIndex | Works with existing hierarchy; abbreviates repeated component names |
 | PropIndex | Works independently; abbreviates repeated property names |
-| ValueIndex | Abbreviates high-frequency, obvious literal values; composes with PropIndex |
+| ValueIndex | Abbreviates high-frequency literal values; `w+` is the default, `w=+` is an explicit fallback |
 | Estragon layout declarations | Already handle named regions/defaults: don't reinvent those structures |
 | Chain single-child paths | Addresses *vertical* ceremony without abandoning explicit nesting |
 | Reuse an ancestor with `^` | Potentially removes repeated declarations; requires strict semantic rules |
+| Optional `=` separator | Preserves arbitrary alias names while letting the author disambiguate token boundaries |
 | Special repeated text/`repeat` prop/`|` separator | Rejected: normal array mapping/host syntax handles repetition better |
 
 ## Principles
 
 1. **Opt-in at each occurrence.** Long names remain valid; never force shorthand everywhere.
-2. **One authoritative meaning.** An alias resolves to one named component, property, or literal; don't infer from context silently.
+2. **No silent interpretation.** Names are flexible across independent indexes and scopes; ambiguous readings fail exactly where authored instead of receiving arbitrary precedence.
 3. **Preserve the view tree.** An optimized declaration should result in the same nodes, props, children, handlers, and order.
 4. **Keep real complexity visible.** Variables, callbacks, conditionals, and meaningful differences remain in the view.
 5. **No decorative compression.** Shorten frequent obvious vocabulary; leave distinctive semantics legible.
 6. **Plain text survives without an IDE.** Rich editor assistance is a bonus, not a prerequisite.
-7. **Static errors beat implicit guessing.** Ambiguity and duplicate props should be compile-time failures.
+7. **Static errors at the use site beat implicit guessing.** Don't globally reject a useful alias because it might collide elsewhere; if multiple meanings are viable on this element, fail there.
 8. **Keep compiler expansion separate from runtime behavior.** React/GGX/native components should not need to understand an alias.
 9. **Let existing host features work.** Loops, arrays, logic, ref/binding and reusable layouts aren't replaced.
 
@@ -47,7 +48,7 @@ A good indexed alias is:
 A poor indexed alias:
 - Is used once to save two characters.
 - Hides a unique business concept.
-- Conflicts with an existing component or prop.
+- Creates widespread, hard-to-read usage-site collisions (not a reason for a global prohibition).
 - Depends on undocumented context.
 - Turns the file into an unreadable collection of one-letter puzzles.
 
@@ -89,10 +90,17 @@ Axe's indexed and chained comparison assumes shared indexes whose declarations a
 
 ## Open decisions before a parser
 
-**Core:**
+**Settled authoring principles (compiler implementation is not shipped):**
+
+- `<B w+ h+ />` is the preferred form; it may use **any** symbolic or alphabetic ValueIndex name when the property/value split is unambiguous.
+- `=` is an **optional, reserved separator**, forbidden inside alias keys. `w=+` selects `w` + `+`; `w+=+` selects a `w+` property alias + `+`.
+- Collisions are checked **per lexical scope, per component, at the actual authored usage site**—not rejected globally and not resolved by an invisible precedence rule.
+- A PropIndex alias `x: extend` is unusable as `x` on a component that already has native `x`; write `extend` there. No automatic native-name preference.
+- Full names, old conventional `=` assignments, and all other AXE features remain optional and mixable.
+
+**Core implementation details still open:**
 - What is the project-wide index file format and import/override precedence?
-- When should an alias conflict with a component/prop that already bears the same spelling?
-- What exact token grammar supports symbols such as `+` and `.` in unquoted attribute-value position?
+- What exact host-aware token grammar handles punctuation, alphabetic suffixes, bare-presence attributes and invalid tokens without losing source maps?
 - Must chain closures match the entire path verbatim?
 - How does authored source formatting interact with JSX text whitespace?
 
@@ -110,4 +118,4 @@ Axe's indexed and chained comparison assumes shared indexes whose declarations a
 - Does the IDE display expanded source without rewriting the file?
 - How are source maps and errors tied to original Axe spans?
 
-None of these need to be answered by inventing yet another delimiter. The smallest working compiler with correct diagnostics and a few actual screen examples should decide the next steps.
+These decisions should not reintroduce mandatory delimiters, global bans on otherwise useful aliases, or a silent precedence rule. A small working compiler and real-view diagnostics should resolve the remaining grammar details.

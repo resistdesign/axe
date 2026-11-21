@@ -16,6 +16,8 @@ This comes from the private source we examined while designing Axe. We intention
 
 At a fixed font, size, and line height, the concise authoring form can show about **2.48× as much source** in the same viewport. This is a property of the compared line counts, *not* a general runtime/UI performance claim.
 
+The private-profile figures above were recorded with the earlier explicit-value draft (`w=+`/`h=+`), so their character totals are **historical measurements**; the final preferred `w+`/`h+` spelling is a little shorter, but the private source is not redistributed or silently remeasured. The line-count comparison remains informative.
+
 The syntax uses compile-time indexes, chained paths, and experimental caret ancestor reuse. Values/aliases are all resolved *outside* the view; indexes are not counted in the local source.
 
 ![Relative vertical footprints](../assets/axe-comparison.svg)
@@ -39,8 +41,10 @@ The script counts only the view text from the first `return (` to its matching e
 | Region | Plain TSX | Axe | Difference |
 | --- | ---: | ---: | ---: |
 | Lines | 68 | 25 | **43 fewer / 63.2% shorter** |
-| Characters | 1,432 | 808 | **624 fewer / 43.6% smaller** |
-| Non-whitespace characters | 844 | 652 | 192 fewer / 22.7% smaller |
+| Characters | 1,432 | 806 | **626 fewer / 43.7% smaller** |
+| Non-whitespace characters | 844 | 650 | 194 fewer / 23.0% smaller |
+
+These public figures use the corrected `w+` / `h+` form. Run `node tools/measure-examples.mjs` to recompute after further edits; the illustrative private comparison above has not been silently changed.
 
 The examples are intentionally not maximally packed. Property expressions are allowed to remain multiline when doing so helps reading.
 

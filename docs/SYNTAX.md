@@ -66,47 +66,84 @@ expands to:
 
 A component must still support the *expanded* property. Property aliases do not introduce new runtime props.
 
-### 1.3 ValueIndex
+### 1.3 ValueIndex: implicit suffix first, optional `=` when needed
+
+Axe's compact form combines a property token and an indexed value token **without a mandatory delimiter**:
 
 ~~~tsx
-<B w=+ h=+>
-  <T c="blue">Hello!</T>
+<B w+ h+>
+  <V gmd>
+    <T c="blue">Hello!</T>
+  </V>
 </B>
 ~~~
 
-expands to:
+With `w: width`, `h: height`, `g: gap` and `+: "100%"`, `md: "medium"`, these are ordinary `width="100%"`, `height="100%"` and `gap="medium"` assignments after expansion.
 
-~~~tsx
-<Box width="100%" height="100%">
-  <Text color="blue">Hello!</Text>
-</Box>
+`=` is an **optional, explicit boundary between the property token and the value token**. It is always syntax, **never an alias or part of an alias name**. This applies across the three index namespaces. Both symbolic and alphabetic alias names remain available; we do **not** reserve `+`, `$`, `.` or alphabetic names for any one index solely to avoid a possible collision.
+
+| Axe source | Interpretation |
+| --- | --- |
+| `w+` | `width="100%"` when that is the only valid interpretation |
+| `w=+` | `width="100%"`, with property/value boundary made explicit |
+| `w+=+` | `max_width="100%"` when `w+` is a PropIndex alias for `max_width` |
+| `gmd` | `gap="medium"` when the token split is unambiguous |
+| `g=md` | `gap="medium"` with an explicit split |
+| `align$` | `align="start"` if unambiguous |
+| `align.` | `align="end"` if unambiguous |
+| `w="+"` | `width="+"` (ordinary quoted literal; **not** an indexed value) |
+| `w={size}` | `width={size}` (ordinary host expression; **not** an indexed value) |
+| `w="100%"` | `width="100%"` (ordinary literal) |
+
+No alias lookup occurs **inside quoted values or braced host-language expressions**. Bare alphabetic value tokens are not implicit variable references. A valueless/bare property retains the host's existing rules; whether a shorthand attribute is a whole property or property+indexed value must be resolved as described below. `w$` might parse as a value alias but still fail because `"start"` is invalid for a particular width property.
+
+### 1.4 Resolving aliases and ambiguity at the use site
+
+**Indexes may be freely defined, imported and scoped. Compile-time ambiguity is a property of a particular _use site_, not inherently an error in an index definition.** The compiler must consider the lexical indexes in scope **and** the concrete element's supported properties/type semantics.
+
+For example, a scope may contain:
+
+~~~xml
+<PropIndex>
+  w: width
+  w+: max_width
+  x: extend
+  g: gap
+</PropIndex>
+<ValueIndex>
+  +: "100%"
+  md: "medium"
+</ValueIndex>
 ~~~
 
-A value token is interpreted **only in the lexical position of an attribute value**. Thus:
+The two ways to read `w+` are: (1) a complete PropIndex key `w+` meaning `max_width` (as a bare property), or (2) `w` followed by the ValueIndex key `+` meaning `width="100%"`. **If more than one candidate is legal on that element, reject that authored occurrence as ambiguous.** If exactly one is legal, use it. If none is legal, report a source-mapped error. Never silently choose the longest name, the shortest name, or a preferred index namespace.
 
-| Axe source | Expanded interpretation |
-| --- | --- |
-| `w=+` | `width="100%"` |
-| `w="+"` | `width="+"` (literal string) |
-| `w={size}` | `width={size}` (host expression) |
-| `w="100%"` | `width="100%"` (ordinary literal) |
-| `align=$` | `align="start"` |
-| `align=.` | `align="end"` |
+~~~tsx
+<B w=+ />     // explicitly: width="100%"
+<B w+=+ />    // explicitly: max_width="100%"
+<B gmd />     // gap="medium" if no competing valid interpretation
+<B g=md />    // same expansion; the '=' states the boundary
+~~~
 
-Both symbolic and alphabetic value aliases can be indexed. Bare identifiers are **not implicit variable references**; dynamic values keep braces. Unknown unquoted value aliases should produce a compiler diagnostic, not become accidental strings or variables. **Open:** identifier/token grammar and namespacing with host-specific JSX parsing.
+The delimiter resolves a **token-boundary** ambiguity; it does **not** override a collision over the **same property spelling**. For example, suppose `<Positioned>` already has a native `x` positioning property *and* `extend`:
 
-Values aren't universally valid for every property: `w=$` might be a valid *token lookup* but an invalid width value. Native framework type/semantic validation must still run after expansion.
+~~~tsx
+<Positioned x={10} />        // ERROR: 'x' means native x or alias extend
+<Positioned extend={true} /> // OK: use the full name of extend here
+~~~
 
-### 1.4 Alias precedence and conflicts
+The `x: extend` alias remains useful on other element types where `x` is not an existing property. If a particular scope needs to author native `x` as well, it must change the visible conflicting alias (or select a scope without it); **native-name precedence is not an escape hatch**. Similarly, if two authored attributes resolve to the same canonical property, fail at those attributes; do not silently override.
 
-Suggested fail-closed rules (design proposal, not finalized):
+**Resolution contract (design target):**
 
-1. Exact full names remain available.
-2. Resolve aliases inside each index's namespace, never by guessing spelling.
-3. Do not silently shadow a native component or prop with an alias of the same token.
-4. Reject two distinct authored attributes that expand to the same prop.
-5. Reject conflicting imported indexes unless an explicit override is declared.
-6. Report errors at the source token and offer the expanded name.
+1. Form candidate exact whole-property names/PropIndex aliases and candidate property-token + ValueIndex-token splits from the syntax used, with lexical index scopes already resolved.
+2. Without `=`, consider all valid splits rather than assuming symbols are suffixes or letters are not. With `=`, the explicit boundary forbids alternative splits across it, though the property token itself may still collide.
+3. Resolve candidates against the element's real native/imported component metadata, existing GGX/Gogo property rules, types, and allowed bare attributes. Do not create magic runtime props.
+4. **0 viable readings:** fail at the authored attribute with candidate/context details. **1 viable reading:** expand deterministically. **2+ viable readings:** fail at that occurrence and suggest an explicit `=`, a different alias/scope, or the complete property name as appropriate.
+5. Alias collisions in one imported/index scope do **not** invalidate unrelated elements or globally prohibit spellings. A collision matters only where its competing meanings remain viable.
+6. Retain source spans for alias tokens and delimiters so diagnostics and editor tooling can explain the expansion or ambiguity. Reject duplicate resulting canonical properties regardless of their authored spellings.
+
+**Unresolved parser details:** the complete grammar of token boundaries in each host language, scope/import override mechanics, and how bare-presence forms interact with native type validation require implementation decisions. These do not reverse the chosen **optional `=` / use-site error** principle.
 
 ## 2. Chained component paths
 
@@ -129,13 +166,13 @@ Equivalent conventional markup:
 When a chain is opened, the last component receives its text or children. Each segment can carry its own attributes using `Segment(...)`:
 
 ~~~tsx
-<B(w=+ h=+)/V(g="8px")/T(c="blue")>Hello!</B/V/T>
+<B(w+ h+)/V(g="8px")/T(c="blue")>Hello!</B/V/T>
 ~~~
 
 Equivalent:
 
 ~~~tsx
-<B w=+ h=+>
+<B w+ h+>
   <V g="8px">
     <T c="blue">Hello!</T>
   </V>
@@ -159,7 +196,7 @@ This rule is provisional but consistent with the examples we've been exploring.
 The matching close path names *the components*, not their attributes:
 
 ~~~tsx
-<B(w=+ h=+)/V/T>Hello!</B/V/T>
+<B(w+ h+)/V/T>Hello!</B/V/T>
 ~~~
 
 Open: whether shorter closing paths or partial suffix closes should be allowed. The conservative initial choice is **exact segment-name matching** (excluding the `^` reuse prefix).
@@ -169,14 +206,14 @@ Open: whether shorter closing paths or partial suffix closes should be allowed. 
 The caret now means **reuse a previously declared element**, *not* close an element and *not* copy its props to a new instance.
 
 ~~~tsx
-<B(w=+ h=+)/V/T>Hello!</B/V/T>
+<B(w+ h+)/V/T>Hello!</B/V/T>
 <^B/V/T>Hola!</B/V/T>
 ~~~
 
 Intended resulting tree:
 
 ~~~tsx
-<B w=+ h=+>
+<B w+ h+>
   <V><T>Hello!</T></V>
   <V><T>Hola!</T></V>
 </B>
@@ -185,14 +222,14 @@ Intended resulting tree:
 The second `^B` targets the previously declared `B`; because `V` has **no caret**, it creates a new child.
 
 ~~~tsx
-<B(w=+ h=+)/V/T>Hello!</B/V/T>
+<B(w+ h+)/V/T>Hello!</B/V/T>
 <^B/^V/T>Hola!</B/V/T>
 ~~~
 
 Intended resulting tree:
 
 ~~~tsx
-<B w=+ h=+>
+<B w+ h+>
   <V>
     <T>Hello!</T>
     <T>Hola!</T>
@@ -243,10 +280,10 @@ Whitespace may remain purely presentational *between* Axe structural tokens. Lit
 
 ## 5. Estragon layout-declaration integration
 
-Estragon has existing reusable `layout const` / `layout var` declarations with grid regions, defaults, and export/reuse. Axe may expand indexes before those declarations are parsed:
+Estragon has existing reusable `layout const` / `layout var` declarations with grid regions, defaults, and export/reuse. Axe may expand indexes while parsing those declarations, preserving original source lines as grid matrix rows:
 
 ~~~gogo
-layout const <App w=+ h=+ columns={["160px", "1fr"]}>
+layout const <App w+ h+ columns={["160px", "1fr"]}>
   <Header /> <Header />
   <Side /> <Body />
   <Side /> <Footer />

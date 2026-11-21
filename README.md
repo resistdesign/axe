@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/axe-hero-square.webp" alt="Axe: compact, readable XML-like UI declarations" width="100%" />
+  <img src="assets/axe-hero-corrected.svg" alt="Axe: compact, readable XML-like UI declarations" width="100%" />
 </div>
 
 # Axe
@@ -8,7 +8,7 @@
 
 Axe is an experimental, compile-time syntax for XML-like view declarations. It keeps familiar tags, nesting, text, expressions, and named properties, but removes recurring *spelling* and *single-child nesting* overhead. Its goal is **readable density**, not maximum compression.
 
-> **Status: design reference, not an implemented compiler.** The examples document syntax we explored; the exact grammar, especially `^` reuse across scopes, still needs implementation and verification. Ordinary JSX/TSX parsers do not accept Axe's chain and bare-token syntax unchanged.
+> **Status: design reference, not an implemented compiler.** The examples document syntax we explored; the exact grammar, especially `^` reuse across scopes, still needs implementation and verification. Ordinary JSX/TSX parsers do not accept Axe's chain and implicit indexed-value syntax unchanged.
 
 ## The idea in one glance
 
@@ -21,10 +21,10 @@ Axe is an experimental, compile-time syntax for XML-like view declarations. It k
 </Box>
 
 // Axe: same intended element tree
-<B(w=+ h=+)/V/T(c="blue")>Hello there!</B/V/T>
+<B(w+ h+)/V/T(c="blue")>Hello there!</B/V/T>
 ~~~
 
-The vocabulary is optional and shared. You can always write `<Box width="100%">` instead of an alias.
+The vocabulary is optional and shared. You can always write `<Box width="100%">` instead of an alias, and use `=` only when it clarifies an otherwise ambiguous token boundary.
 
 <div align="center">
   <img src="assets/axe-mechanics.svg" alt="How component, property and value indexes combine with chained elements and parent reuse" width="100%" />
@@ -36,7 +36,7 @@ The vocabulary is optional and shared. You can always write `<Box width="100%">`
 | :-- | :-- | :-- |
 | **ComponentIndex** | `<B>` → `<Box>` | Repeated long component names |
 | **PropIndex** | `w` → `width` | Repeated long attribute names |
-| **ValueIndex** | `w=+` → `width="100%"` | Repeated common literal values |
+| **ValueIndex** | `w+` → `width="100%"` (`w=+` if needed) | Repeated common literal values |
 | **Chained elements** | `<B/V/T>Hi</B/V/T>` | Vertical single-child wrappers |
 | **Path reuse** (experimental) | `<^B/^V/T>Hola</B/V/T>` | Redeclaring an existing ancestor |
 
@@ -61,14 +61,16 @@ The first three are **independent indexes** that can live in one repository-wide
 </ValueIndex>
 ~~~
 
-Value tokens are unquoted only when an index lookup is intended: `w=+` expands to `width="100%"`; `w="+"` means a literal plus sign. Braced expressions such as `w={someWidth}` remain ordinary expressions. Bare alphabetic value tokens such as `fd=r` are part of the **proposed compiler grammar**, not existing JSX.
+**The default is `w+`, not `w=+`.** Indexed values can follow a property token directly: `w+` → `width="100%"`, `h+` → `height="100%"`, and even alphabetic tokens such as `gmd` → `gap="medium"`. `w=+` remains a valid **optional explicit separator** when you need to specify where the property token ends and the value token begins. The character `=` is reserved syntax and cannot be part of any alias name. Literal `w="+"` and expression `w={someWidth}` keep their usual meanings.
+
+**Ambiguity is diagnosed where an attribute is used, in its lexical index scope and on its actual element—not by globally banning aliases.** For example, if `w` maps to `width`, `w+` maps to `max_width`, and `+` maps to `"100%"`, `w+` may have multiple valid readings on a given element. Write `w=+` for `width="100%"` or `w+=+` for `max_width="100%"`. Likewise, if `x` is an existing native property and an alias for `extend` on the same element, using `x` is ambiguous: write `extend` there instead. See the [complete resolution rules](docs/SYNTAX.md#14-resolving-aliases-and-ambiguity-at-the-use-site).
 
 ## The new kind of nesting
 
 Single-child chains stay explicit while moving *left to right*:
 
 ~~~tsx
-<B(w=+ h=+)/V/T(c="blue")>Hello!</B/V/T>
+<B(w+ h+)/V/T(c="blue")>Hello!</B/V/T>
 ~~~
 
 The inner `T` receives the text; each ancestor may have its own `(...)` attributes. Ordinary nested JSX is still available for branching layouts.
@@ -76,7 +78,7 @@ The inner `T` receives the text; each ancestor may have its own `(...)` attribut
 The next idea is **reuse**, not a closing-tag replacement:
 
 ~~~tsx
-<B(w=+ h=+)/V/T>Hello!</B/V/T>
+<B(w+ h+)/V/T>Hello!</B/V/T>
 <^B/V/T>Hola!</B/V/T>       // Same B, NEW V
 <^B/^V/T>Bonjour!</B/V/T>  // Same B, same most-recent V
 ~~~
@@ -108,7 +110,7 @@ Axe preserves verbose, well-named markup as an escape hatch *by design*.
 Estragon's existing `layout const` declarations already define reusable named regions, defaults, and grid matrices. Axe indexes can expand inside those declarations **before** Estragon interprets the layout. The grid's source line boundaries intentionally define matrix rows; this is distinct from Axe's whitespace-insensitive element-chain idea.
 
 ~~~gogo
-layout const <App w=+ h=+ gap="8px" columns={["160px", "1fr"]}>
+layout const <App w+ h+ gap="8px" columns={["160px", "1fr"]}>
   <Header /> <Header />
   <Side /> <Body />
   <Side /> <Footer />

@@ -8,7 +8,7 @@
 </defs>
 <rect width="1440" height="850" rx="22" fill="url(#bg)"/>
 <text x="58" y="77" font-family="Inter,Arial,sans-serif" font-size="42" font-weight="800" fill="#153039">Three indexes. One readable language.</text>
-<text x="58" y="115" font-family="Inter,Arial,sans-serif" font-size="22" fill="#566E74">Every index expands independently. Ordinary full names still work anywhere.</text>
+<text x="58" y="115" font-family="Inter,Arial,sans-serif" font-size="22" fill="#566E74">Every index expands independently. Write w+ (or w=+ to clarify).</text>
 <g filter="url(#s)">
 <rect x="56" y="156" width="416" height="266" rx="21" fill="#FFF" stroke="#C8D9D2"/>
 <rect x="512" y="156" width="416" height="266" rx="21" fill="#FFF" stroke="#C8D9D2"/>
@@ -33,7 +33,7 @@
 <path d="M264 432V479M720 432V479M1176 432V479M264 479H1176M720 479V505" stroke="#89B9A8" stroke-width="4" fill="none"/>
 <rect x="154" y="508" width="1132" height="109" rx="18" fill="url(#blk)"/>
 <text x="189" y="546" font-size="18" font-weight="700" fill="#9ED5C7" font-family="Inter,Arial,sans-serif">YOU AUTHOR</text>
-<text x="189" y="591" font-size="30" font-weight="750" fill="#E4FFAC" font-family="ui-monospace,Consolas,monospace">&lt;B w=+ /&gt;</text>
+<text x="189" y="591" font-size="30" font-weight="750" fill="#E4FFAC" font-family="ui-monospace,Consolas,monospace">&lt;B w+ /&gt;</text>
 <path d="M578 567H657" stroke="#65BB9B" stroke-width="4"/><path d="m643 557 15 10-15 10" stroke="#65BB9B" stroke-width="4" fill="none"/>
 <text x="692" y="546" font-size="18" font-weight="700" fill="#9ED5C7" font-family="Inter,Arial,sans-serif">COMPILER PRODUCES</text>
 <text x="692" y="591" font-size="29" font-weight="750" fill="#FFFFFF" font-family="ui-monospace,Consolas,monospace">&lt;Box width="100%" /&gt;</text>

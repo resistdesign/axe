@@ -1,6 +1,9 @@
 # Proposed repository-wide indexes (illustration only).
 # Syntax is not accepted by existing TSX/GGX compilers without an Axe transform.
 # Use stable, recognizable tokens. Full names remain allowed.
+# w+ combines w -> width and + -> "100%"; w=+ explicitly separates them.
+# "=" is reserved syntax and cannot occur in an alias key. Collisions are
+# diagnosed at each use site, not by globally banning index definitions.
 
 <ComponentIndex>
   B: Box
