@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/axe-hero-corrected.svg" alt="Axe: compact, readable XML-like UI declarations" width="100%" />
+  <img src="assets/axe-header.png" alt="AXE — From Decoding Syntax to Recognizing Shapes; compact view declaration illustrated in view.gogo" width="100%" />
 </div>
 
 # Axe
