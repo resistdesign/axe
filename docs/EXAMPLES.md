@@ -2,6 +2,20 @@
 
 These are original, self-contained illustrative examples of **proposed syntax**. The matching plain JSX is shown where it helps. See [shared indexes](../examples/shared-indexes.axe).
 
+## 0. Preserve the meaning, remove the repetition
+
+~~~jsx
+// Ordinary JSX — behavior is onSaveForm, label is Save
+<Button onClick={onSaveForm}>Save</Button>
+
+// Axe — those two meaningful details are unchanged
+<Bt(oC={onSaveForm})>Save</Bt>
+~~~
+
+For this illustration, **ComponentIndex** contains `Bt: Button` and **PropIndex** contains `oC: onClick`. These are framework-vocabulary aliases, not renamings of application data. We deliberately **do not** shorten `onSaveForm` or `Save`: they tell you the control's purpose. Developers are always free to use either full spelling or the indexed spelling, even within one view.
+
+This is the design goal behind *readable density*: **less redundant markup, more visible intent**.
+
 ## 1. Tiny: three indexes together
 
 ~~~jsx

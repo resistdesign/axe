@@ -8,6 +8,24 @@ We started with a large, complex XML-like layout. Long names and one-prop-per-li
 
 Our north star: **more intent per screen, fewer meaningless keystrokes, and no mandatory hidden structure**.
 
+## The core principle: compress vocabulary, not intent
+
+AXE's strongest readability advantage is **selective compression**. Familiar framework vocabulary repeats throughout a large view; the important, less predictable information is the app-specific meaning carried by handler names, labels, text, expressions, and domain concepts.
+
+~~~jsx
+// Familiar XML/JSX
+<Button onClick={onSaveForm}>Save</Button>
+
+// Proposed Axe syntax
+<Bt(oC={onSaveForm})>Save</Bt>
+~~~
+
+Here `Bt` maps to `Button`, and `oC` maps to `onClick`. Those are reusable conventions developers can learn once (or expand in the editor). **`onSaveForm` and `Save` remain untouched.** An author reading this still knows what control it is and what it does. In a real view, that specific meaning matters more than repeatedly spelling out the framework's standard names.
+
+This is not indiscriminate minification, automatic renaming, or an invitation to turn domain identifiers into cryptic initials. **Meaningful application identifiers and user-facing content are not targets for AXE alias expansion.** Component and property aliases are optional, shared vocabulary; developers can use full names whenever shorthand makes a particular view less legible.
+
+**Evaluate AXE by how clearly a reader can find the UI's purpose, behavior, and data, not by how few characters it contains.**
+
 ## Things we learned, in order
 
 | Experiment | Outcome |
@@ -28,14 +46,15 @@ Our north star: **more intent per screen, fewer meaningless keystrokes, and no m
 ## Principles
 
 1. **Opt-in at each occurrence.** Long names remain valid; never force shorthand everywhere.
-2. **No silent interpretation.** Names are flexible across independent indexes and scopes; ambiguous readings fail exactly where authored instead of receiving arbitrary precedence.
-3. **Preserve the view tree.** An optimized declaration should result in the same nodes, props, children, handlers, and order.
-4. **Keep real complexity visible.** Variables, callbacks, conditionals, and meaningful differences remain in the view.
-5. **No decorative compression.** Shorten frequent obvious vocabulary; leave distinctive semantics legible.
-6. **Plain text survives without an IDE.** Rich editor assistance is a bonus, not a prerequisite.
-7. **Static errors at the use site beat implicit guessing.** Don't globally reject a useful alias because it might collide elsewhere; if multiple meanings are viable on this element, fail there.
-8. **Keep compiler expansion separate from runtime behavior.** React/GGX/native components should not need to understand an alias.
-9. **Let existing host features work.** Loops, arrays, logic, ref/binding and reusable layouts aren't replaced.
+3. **Compress repeated framework vocabulary, never app-specific intent.** Preserve expressive handler names, domain variables, labels, user-visible text, and logic.
+3. **No silent interpretation.** Names are flexible across independent indexes and scopes; ambiguous readings fail exactly where authored instead of receiving arbitrary precedence.
+4. **Preserve the view tree.** An optimized declaration should result in the same nodes, props, children, handlers, and order.
+5. **Keep real complexity visible.** Variables, callbacks, conditionals, and meaningful differences remain in the view.
+6. **No decorative compression.** Shorten frequent obvious vocabulary; leave distinctive semantics legible.
+7. **Plain text survives without an IDE.** Rich editor assistance is a bonus, not a prerequisite.
+8. **Static errors at the use site beat implicit guessing.** Don't globally reject a useful alias because it might collide elsewhere; if multiple meanings are viable on this element, fail there.
+9. **Keep compiler expansion separate from runtime behavior.** React/GGX/native components should not need to understand an alias.
+10. **Let existing host features work.** Loops, arrays, logic, ref/binding and reusable layouts aren't replaced.
 
 ## Index authoring guidelines
 

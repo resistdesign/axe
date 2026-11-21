@@ -10,6 +10,24 @@ Axe is an experimental, compile-time syntax for XML-like view declarations. It k
 
 > **Status: design reference, not an implemented compiler.** The examples document syntax we explored; the exact grammar, especially `^` reuse across scopes, still needs implementation and verification. Ordinary JSX/TSX parsers do not accept Axe's chain and implicit indexed-value syntax unchanged.
 
+## Compress the framework's vocabulary. Preserve the developer's intent.
+
+**AXE shortens the predictable parts of code so the meaningful parts stand out.** Component and property names are familiar, repeated framework vocabulary. The handler names, labels, expressions, and content tell you what *this particular interface* does. Those stay readable and intact.
+
+~~~jsx
+// Conventional markup
+<Button onClick={onSaveForm}>Save</Button>
+
+// AXE — same button, same handler, same label
+<Bt(oC={onSaveForm})>Save</Bt>
+~~~
+
+With `Bt: Button` in **ComponentIndex** and `oC: onClick` in **PropIndex**, the shorthand expands back to the same intent. **`onSaveForm` is not abbreviated. `Save` is not abbreviated.** You can tell exactly what action the user will trigger, even when the framework plumbing is shortened.
+
+AXE is **not** trying to compress your application's meaning. It increases the proportion of meaningful information on screen by removing repetitive syntax around it. The full `Button` and `onClick` spellings remain available whenever they read better.
+
+> **Shorten the predictable. Preserve the particular.**
+
 ## The idea in one glance
 
 ~~~tsx
