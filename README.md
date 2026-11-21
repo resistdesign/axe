@@ -30,7 +30,7 @@ The vocabulary is optional and shared. You can always write `<Box width="100%">`
   <img src="assets/axe-mechanics.svg" alt="How component, property and value indexes combine with chained elements and parent reuse" width="100%" />
 </div>
 
-## Four ideas, designed to compose
+## Five complementary ideas
 
 | Feature | Example | What it removes |
 | :-- | :-- | :-- |
@@ -89,7 +89,7 @@ The `^` prefix is an **experimental reference** to an existing element in a cons
   <img src="assets/axe-comparison.svg" alt="Visual comparison of an original TSX screen with its experimental Axe rewrite: 166 versus 67 lines" width="100%" />
 </div>
 
-An exploratory, formatting-specific screen comparison went from **166 to 67 lines** and **4,874 to 2,425 characters** (about **50.2%**). These numbers describe a *particular authored example*, not a guaranteed reduction. Index files and compiler machinery are not part of that view-only count. To avoid copying private app source into this public repository, the runnable-looking examples here use invented UI and identifiers.
+An exploratory, formatting-specific screen comparison went from **166 to 67 lines** — **99 lines eliminated, 59.6% less vertical source, or 2.48× as much view declaration visible at a fixed line height**. The same comparison went from **4,874 to 2,425 characters** (about **50.2% smaller**). These numbers describe a *particular authored example*, not a guaranteed reduction. Index files and compiler machinery are not part of that view-only count. To avoid copying private app source into this public repository, the runnable-looking examples here use invented UI and identifiers.
 
 Read the [fully worked, original profile-editor example](examples/profile-editor.original.tsx.txt) beside the [Axe rendering](examples/profile-editor.axe), or visit the [annotated examples](docs/EXAMPLES.md).
 
